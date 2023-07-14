@@ -83,6 +83,7 @@ public class Player extends GameObject{
             counter += 1; 
             main.velP = 0;
             distanceFrames -= 100;  
+            cam.cameraSpeed += 1; 
         }
 
         lives = main.clamp(lives, 0, 99);
@@ -129,7 +130,7 @@ public class Player extends GameObject{
 
         fireAnimation.drawAnimation(g, (int)x - 85, (int)y - 110, 250, 250);
 
-        if (!stopR) g.drawImage(tex.Player[1], (int)x - 85, (int)y - 111, 250, 250, null); 
+        if (!stopR) g.drawImage(tex.Player[0], (int)x - 85, (int)y - 111, 250, 250, null); 
        
         Graphics2D g2d = (Graphics2D)g;
 

@@ -53,6 +53,7 @@ public class WallColumn {
                 speed = 5;
                 player.setVelocity(3); 
                 player.setVM(7); 
+                cam.cameraSpeed = 1; 
                 main.velP = 0;
                 player.counter = 0;
                 player.Enter1 = false;  
