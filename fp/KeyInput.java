@@ -1,16 +1,21 @@
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.Random; 
 
 public class KeyInput extends KeyAdapter{
     
     private Main main; 
     private Player player; 
     private WallColumn wc; 
+    private Random random; 
+    private int[] baseCosts = new int[5]; 
 
     public KeyInput(Main main){
         this.main = main; 
         this.player = this.main.getPlayer(); 
         this.wc = this.main.getWalls(); 
+        this.random = new Random(); 
+        baseCosts[0] = 3; baseCosts[1] = 5; baseCosts[2] = 5; baseCosts[3] = 7; baseCosts[4] = 7; 
     }
 
     public void keyPressed(KeyEvent evt){
@@ -23,7 +28,7 @@ public class KeyInput extends KeyAdapter{
 
         //PowerUps
         if (c == KeyEvent.VK_SHIFT){
-            if (player.getPC() == 3) player.setPC(0); 
+            if (player.getPC() == 4) player.setPC(0); 
             else player.setPC(player.getPC() + 1);
         }
 
@@ -88,6 +93,26 @@ public class KeyInput extends KeyAdapter{
                 player.setPoints(player.getPoints() - player.getCosts()[player.getPC()]);  
                 player.setCosts(1, player.getCosts()[player.getPC()] + 5);
             }
+
+            if (player.getPC() == 2 && player.getPoints() >= player.getCosts()[player.getPC()]){
+
+                player.setPoints(player.getPoints() - player.getCosts()[player.getPC()]);  
+
+                int randWay = random.nextInt(0, 3); 
+                if (player.getCosts()[randWay] == baseCosts[randWay]){
+
+                    if (randWay == 0) player.setLives(player.getLives() + 3);
+                    if (randWay == 1) player.Enter1 = true; 
+                    if (randWay == 2) player.setLives(player.getLives() + 5);
+                }
+                else player.setCosts(randWay, baseCosts[randWay]); 
+
+                if (randWay != 2){
+                      player.setCosts(2, player.getCosts()[player.getPC()] + 5);
+                }
+            
+            }
+
         }
 
 

@@ -17,7 +17,7 @@ public class Texture {
     public BufferedImage background = null; 
     public BufferedImage cloud = null;  
     public BufferedImage Wall = null;
-    public BufferedImage[] PowerUps = new BufferedImage[7]; 
+    public BufferedImage[] PowerUps = new BufferedImage[11]; 
     public BufferedImage[] Explosion = new BufferedImage[9]; 
 
     public BufferedImage[] fire = new BufferedImage[9];
@@ -84,6 +84,7 @@ public class Texture {
         HUD[15] = hs.grabImage(15, 1, 32, 32); 
         HUD[16] = hs.grabImage(16, 1, 32, 32); 
         HUD[17] = hs.grabImage(17, 1, 32, 32); 
+        HUD[18] = hs.grabImage(18, 1, 32, 32);
 
         //Explosions
         Explosion[0] = es.grabImage(1, 1, 100, 100);
@@ -102,6 +103,10 @@ public class Texture {
         PowerUps[3] = pb.grabImage(3, 1, 200, 150); 
         PowerUps[4] = pb.grabImage(4, 1, 200, 150); 
         PowerUps[5] = pb.grabImage(5, 1, 200, 150); 
-        PowerUps[6] = pb.grabImage(6, 1, 200, 150); 
+        PowerUps[6] = pb.grabImage(6, 1, 200, 150);
+        PowerUps[7] = pb.grabImage(7, 1, 200, 150); 
+        PowerUps[8] = pb.grabImage(8, 1, 200, 150);  
+        PowerUps[9] = pb.grabImage(9, 1, 200, 150); 
+        PowerUps[10] = pb.grabImage(10, 1, 200, 150); 
     }
 }

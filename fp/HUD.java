@@ -51,23 +51,36 @@ public class HUD{
         //PowerUps
 
         //1) 
-        if (player.getPC() == 0) g.drawImage(tex.PowerUps[2], -(int)cam.getX() + 80, 610, 250, 200, null);
-        else g.drawImage(tex.PowerUps[1], -(int)cam.getX() + 80, 610, 250, 200, null);
-        g.drawImage(tex.HUD[13], -(int)cam.getX() + 145, 680, 100, 100, null);
-        g.drawImage(tex.HUD[15], -(int)cam.getX() + 150, 655, 50, 50, null);
-        g.drawImage(tex.HUD[16], -(int)cam.getX() + 178, 680, 65, 65, null);
-        drawNum(dFormat.format(player.getCosts()[0]), g, -(int)cam.getX() + 175, 655);
+        if (player.getPC() == 0) g.drawImage(tex.PowerUps[2], -(int)cam.getX() + 70, 610, 250, 200, null);
+        else g.drawImage(tex.PowerUps[1], -(int)cam.getX() + 70, 610, 250, 200, null);
+        g.drawImage(tex.HUD[13], -(int)cam.getX() + 135, 680, 100, 100, null);
+        g.drawImage(tex.HUD[15], -(int)cam.getX() + 140, 655, 50, 50, null);
+        g.drawImage(tex.HUD[16], -(int)cam.getX() + 168, 680, 65, 65, null);
+        drawNum(dFormat.format(player.getCosts()[0]), g, -(int)cam.getX() + 165, 655);
 
         //2)
-        if (player.getPC() == 1) g.drawImage(tex.PowerUps[6], -(int)cam.getX() + 250, 610, 250, 200, null);
-        else g.drawImage(tex.PowerUps[5], -(int)cam.getX() + 250, 610, 250, 200, null);
-        g.drawImage(tex.HUD[15], -(int)cam.getX() + 320, 655, 50, 50, null);
-        g.drawImage(tex.HUD[17], -(int)cam.getX() + 315, 670, 100, 100, null); 
-        drawNum(dFormat.format(player.getCosts()[1]), g, -(int)cam.getX() + 345, 655);
+        if (player.getPC() == 1) g.drawImage(tex.PowerUps[6], -(int)cam.getX() + 240, 610, 250, 200, null);
+        else g.drawImage(tex.PowerUps[5], -(int)cam.getX() + 240, 610, 250, 200, null);
+        g.drawImage(tex.HUD[15], -(int)cam.getX() + 310, 655, 50, 50, null);
+        g.drawImage(tex.HUD[17], -(int)cam.getX() + 305, 670, 100, 100, null); 
+        drawNum(dFormat.format(player.getCosts()[1]), g, -(int)cam.getX() + 335, 655);
 
-        //3)
-        if (player.getPC() == 2) g.drawImage(tex.PowerUps[4], -(int)cam.getX() + 420, 565, 250, 200, null);
-        else g.drawImage(tex.PowerUps[3], -(int)cam.getX() + 420, 565, 250, 200, null);
+        //3
+        if (player.getPC() == 2) g.drawImage(tex.PowerUps[8], -(int)cam.getX() + 410, 610, 250, 200, null); 
+        else g.drawImage(tex.PowerUps[7], -(int)cam.getX() + 410, 610, 250, 200, null); 
+        g.drawImage(tex.HUD[15], -(int)cam.getX() + 480, 655, 50, 50, null);
+        g.drawImage(tex.HUD[15], -(int)cam.getX() + 472, 680, 70, 70, null); 
+        g.drawImage(tex.HUD[18], -(int)cam.getX() + 510, 685, 70, 70, null); 
+        drawNum(dFormat.format(player.getCosts()[2]), g, -(int)cam.getX() + 505, 655);
+
+        //4)
+        if (player.getPC() == 3) g.drawImage(tex.PowerUps[10], -(int)cam.getX() + 580, 610, 250, 200, null); 
+        else g.drawImage(tex.PowerUps[9], -(int)cam.getX() + 580, 610, 250, 200, null); 
+
+        //5)
+        if (player.getPC() == 4) g.drawImage(tex.PowerUps[4], -(int)cam.getX() + 750, 565, 250, 200, null);
+        else g.drawImage(tex.PowerUps[3], -(int)cam.getX() + 750, 565, 250, 200, null);
+
 
         //Clock 
         /* 
@@ -78,6 +91,8 @@ public class HUD{
             g.drawImage(t.HUD[10], -(int)cam.getX() + 995, 10, 57, 57, null); 
             drawNum(ddSecond, g, -(int)cam.getX() + 1010, 10);
         }*/
+
+        drawNum(ddFormat.format(player.getDistance()), g, -(int)cam.getX() + 500, 30); 
     }
 
     private void drawNum(String s, Graphics g, int x, int y){

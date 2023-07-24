@@ -26,7 +26,7 @@ public class Player extends GameObject{
 
     //PowerUps
     private int pCounter = 0; 
-    private int[] Costs = new int[4]; 
+    private int[] Costs = new int[5]; 
     public int counter = 0; 
     public boolean Enter1 = false; 
 
@@ -57,7 +57,7 @@ public class Player extends GameObject{
         distanceTimer.start();
         fireAnimation = new Animation(tex.fire[0], tex.fire[1], tex.fire[2], tex.fire[3], tex.fire[4], tex.fire[5], tex.fire[6], tex.fire[7]); 
         KeyDown = new boolean[5];
-        Costs[0] = 3; Costs[1] = 5; Costs[2] = 5; Costs[3] = 7;  
+        Costs[0] = 3; Costs[1] = 5; Costs[2] = 5; Costs[3] = 7; Costs[4] = 7;  
     }
 
     @Override
@@ -66,6 +66,7 @@ public class Player extends GameObject{
         x += velX; 
         y += velY;   
 
+        //Windows: 990, Mac: 920 
         x = main.clamp((int)x, ((int)-cam.getX()) - 25, ((int)-cam.getX()) + 990);
         y = main.clamp((int)y, 5, 615); 
 
@@ -101,6 +102,8 @@ public class Player extends GameObject{
             fireAnimation.setStop(false);
             stopR = false; 
         }
+
+        distance += Math.abs(velX/7); 
 
         Collision();
     }
