@@ -1,4 +1,5 @@
 import java.awt.image.BufferedImage;
+import java.awt.Font;
 
 public class Texture {
     
@@ -12,7 +13,7 @@ public class Texture {
     private BufferedImage HUD_sheet = null; 
     private BufferedImage explosion_sheet = null; 
     private BufferedImage PB_sheet = null; 
-    private BufferedImage player_sheet = null; 
+    private BufferedImage player_sheet = null;
 
     public BufferedImage background = null; 
     public BufferedImage cloud = null;  
@@ -23,7 +24,9 @@ public class Texture {
     public BufferedImage[] fire = new BufferedImage[9];
     public BufferedImage[] HUD = new BufferedImage[25];
 
-    public BufferedImage[] Player = new BufferedImage[2]; 
+    public BufferedImage[] Player = new BufferedImage[10]; 
+
+    public Font font; 
     
     public Texture(){
         BufferedImageLoader loader = new BufferedImageLoader(); 
@@ -37,6 +40,9 @@ public class Texture {
             explosion_sheet = loader.loadImage("/explosion_sheet.png"); 
             PB_sheet = loader.loadImage("/PB_sheet.png"); 
             player_sheet = loader.loadImage("/player_sheet.png");
+
+            font = Font.createFont(Font.TRUETYPE_FONT, Main.class.getResourceAsStream("/font.ttf")); 
+            font = font.deriveFont(24f);
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -53,6 +59,7 @@ public class Texture {
         //Player skins
         Player[0] = ps.grabImage(1, 1, 150, 150); 
         Player[1] = ps.grabImage(2, 1, 150, 150); 
+        Player[2] = ps.grabImage(3, 1, 150, 150);
 
         //Rocket Fire
         fire[0] = fs.grabImage(1, 1, 150, 150);
@@ -85,6 +92,7 @@ public class Texture {
         HUD[16] = hs.grabImage(16, 1, 32, 32); 
         HUD[17] = hs.grabImage(17, 1, 32, 32); 
         HUD[18] = hs.grabImage(18, 1, 32, 32);
+        HUD[19] = hs.grabImage(19, 1, 32, 32);
 
         //Explosions
         Explosion[0] = es.grabImage(1, 1, 100, 100);

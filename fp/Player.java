@@ -25,10 +25,10 @@ public class Player extends GameObject{
     private int distance;  
 
     //PowerUps
-    private int pCounter = 0; 
     private int[] Costs = new int[5]; 
     public int counter = 0; 
     public boolean Enter1 = false; 
+    public int pSelected = -1;
 
     private boolean hit = false; 
     private Timer invincibilityTimer; 
@@ -48,7 +48,7 @@ public class Player extends GameObject{
         this.maxVelocity = 7; 
         this.lives = 3; 
         this.points = 0; 
-        this.distance = 0; 
+        this.distance = 0;
         velX = 0; 
         velY = 0; 
         Clock();
@@ -57,7 +57,7 @@ public class Player extends GameObject{
         distanceTimer.start();
         fireAnimation = new Animation(tex.fire[0], tex.fire[1], tex.fire[2], tex.fire[3], tex.fire[4], tex.fire[5], tex.fire[6], tex.fire[7]); 
         KeyDown = new boolean[5];
-        Costs[0] = 3; Costs[1] = 5; Costs[2] = 5; Costs[3] = 7; Costs[4] = 7;  
+        Costs[0] = 3; Costs[1] = 5; Costs[2] = 7; Costs[3] = 9;   
     }
 
     @Override
@@ -209,14 +209,6 @@ public class Player extends GameObject{
 
     public void setCosts(int index, int value){
         this.Costs[index] = value; 
-    }
-
-    public int getPC(){
-        return this.pCounter; 
-    }
-
-    public void setPC(int pCounter){
-        this.pCounter = pCounter; 
     }
     
     private void Clock(){
