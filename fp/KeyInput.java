@@ -7,7 +7,7 @@ public class KeyInput extends KeyAdapter{
     private Main main; 
     private Player player;  
     private Random random; 
-    private int[] baseCosts = new int[5]; 
+    private int[] baseCosts = new int[4]; 
 
     public KeyInput(Main main){
         this.main = main; 
@@ -87,7 +87,7 @@ public class KeyInput extends KeyAdapter{
          }
 
         //Health powerUp is selected 
-        if (c == KeyEvent.VK_W){
+        if (c == KeyEvent.VK_W && !player.Enter2){
 
             if (player.pSelected == 0){
 
@@ -104,7 +104,7 @@ public class KeyInput extends KeyAdapter{
         }  
 
         //Slow down powerUp is selected
-        if (c == KeyEvent.VK_A){
+        if (c == KeyEvent.VK_A && !player.Enter2){
 
             if (player.pSelected == 1){
 
@@ -122,7 +122,7 @@ public class KeyInput extends KeyAdapter{
         }
         
         //Reset powerUp is selected
-        if (c == KeyEvent.VK_S){
+        if (c == KeyEvent.VK_S && !player.Enter2){
 
             if (player.pSelected == 2){
 
@@ -134,8 +134,7 @@ public class KeyInput extends KeyAdapter{
                     }
 
                     if (counter == 0){
-                        player.pSelected = -3; 
-                        player.setLives(player.getLives() + 100);
+                        player.pSelected = -3;  
                     }
 
                     else if (counter == 1){
@@ -147,6 +146,7 @@ public class KeyInput extends KeyAdapter{
                                 break; 
                             }
                         } 
+                        player.pSelected = -1; 
                     }
 
                     else if (counter == 2 || counter == 3){
@@ -163,22 +163,35 @@ public class KeyInput extends KeyAdapter{
                                 }
                             }
                         }
+                        player.pSelected = -1; 
                     }
 
                     else if (counter == 4){
                         player.setPoints(player.getPoints() - player.getCosts()[2]);
                         int randWay = random.nextInt(0, 4);
                         player.setCosts(randWay, baseCosts[randWay]);
+                        player.pSelected = -1; 
                     }
-
-                    player.pSelected = -1; 
 
                 } else player.pSelected = -2; 
                 
             } else player.pSelected = 2; 
         }
 
-        if (c == KeyEvent.VK_D) player.pSelected = 3; 
+        if (c == KeyEvent.VK_D){
+
+            if (player.pSelected == 3){
+
+                if (player.getPoints() >= player.getCosts()[3]){
+                    player.Enter2 = true; 
+                    player.setPoints(player.getPoints() - player.getCosts()[3]);
+                    player.setCosts(3, player.getCosts()[3] + 9);
+                     
+                } else player.pSelected = -2; 
+
+            } else player.pSelected = 3; 
+            
+        } 
                 
     }
         

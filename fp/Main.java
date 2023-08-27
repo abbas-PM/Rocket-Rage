@@ -12,7 +12,7 @@ public class Main extends Canvas implements Runnable{
 
     private boolean running = false; 
     private Thread thread; 
-    //Windows size: 1100x800, Mac Size: 1010x780
+    //Windows size: 1100x800, Mac Size: 1100x790
     public final int WIDTH = 1100, HEIGHT = 800;
     public int velW, velP; 
 
@@ -138,6 +138,7 @@ public class Main extends Canvas implements Runnable{
         explosion.drawAnimation(g, (int)-cam.getX() + Ex, Ey, 100, 100);
 
         g.drawImage(tex.cloud, (int)-cam.getX(), 0, WIDTH, HEIGHT, null);
+        //Windows WIDTH + 340, MAC: WIDTH + 360
         g.drawImage(tex.PowerUps[0], (int)-cam.getX() - 160, 615, WIDTH + 340, 225, null); 
 
         handler.render(g);

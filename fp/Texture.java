@@ -93,6 +93,7 @@ public class Texture {
         HUD[17] = hs.grabImage(17, 1, 32, 32); 
         HUD[18] = hs.grabImage(18, 1, 32, 32);
         HUD[19] = hs.grabImage(19, 1, 32, 32);
+        HUD[20] = hs.grabImage(20, 1, 32, 32);
 
         //Explosions
         Explosion[0] = es.grabImage(1, 1, 100, 100);

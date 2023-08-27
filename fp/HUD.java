@@ -14,8 +14,8 @@ public class HUD{
     private Camera cam;
     private Player player;
     
-    private Timer clock1; 
-    private int second; 
+    private Timer clock1; private Timer clock2;
+    private int second; private int second2;
     private DecimalFormat dFormat = new DecimalFormat("00");
     private DecimalFormat ddFormat = new DecimalFormat("0000"); 
     private Random random; 
@@ -30,11 +30,12 @@ public class HUD{
         this.texts[0] = "NO POWERUP SELECTED";
         this.texts[1] = "HEALTH INCREASE"; 
         this.texts[2] = "SLOW DOWN"; 
-        this.texts[3] = "COST RESET"; 
-        this.texts[4] = "";
+        this.texts[3] = "RANDOM COST RESET"; 
+        this.texts[4] = "SHRINK";
         this.texts[5] = "NOT ENOUGH ENERGY"; 
-        //this.texts[6] = "NO COST CAN BE RESET";
+        this.texts[6] = "NO COST CAN BE RESET";
         Message();
+        Message2();
     }
 
     public void render(Graphics g){
@@ -72,6 +73,18 @@ public class HUD{
             }
         }
 
+        if (player.pSelected == -3){
+            clock2.start();
+            if (second2 < 3){
+                g.drawString(texts[6], -(int)cam.getX() + 120, 715);
+            }
+            else{
+                clock2.stop();
+                second2 = 0; 
+                player.pSelected = -1; 
+            }
+        }
+
         //1)
         if (player.pSelected == 0){
             g.drawImage(tex.PowerUps[1], -(int)cam.getX() + 824, 610, 250, 200, null);
@@ -103,7 +116,10 @@ public class HUD{
         //4)
         if (player.pSelected == 3){
             g.drawImage(tex.PowerUps[9], -(int)cam.getX() + 824, 610, 250, 200, null); 
+            g.drawImage(tex.HUD[15], -(int)cam.getX() + 894, 655, 50, 50, null);
+            g.drawImage(tex.HUD[20], -(int)cam.getX() + 890, 670, 97, 97, null); 
             g.drawString(texts[4], -(int)cam.getX() + 120, 715);
+            drawNum(dFormat.format(player.getCosts()[3]), g, -(int)cam.getX() + 919, 655);
         }
 
 
@@ -118,6 +134,8 @@ public class HUD{
         }*/
 
         drawNum(ddFormat.format(player.getDistance()), g, -(int)cam.getX() + 500, 30); 
+
+
     }
 
     private void drawNum(String s, Graphics g, int x, int y){
@@ -148,5 +166,18 @@ public class HUD{
             }
             
         });
+    }
+
+    private void Message2(){
+
+        clock2 = new Timer(1000, new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                second2++; 
+            }
+            
+        });
+        
     }
 }
