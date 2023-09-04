@@ -291,7 +291,7 @@ public class Menu extends MouseAdapter{
           } else g.drawString("SELECT", 65, 240);
 
           if (main.getPlayer().skins[0] == 0){
-            g.drawString("BUY FOR", 325, 230); g.drawString("99,999", 340, 255);  
+            g.drawString("BUY FOR", 325, 230); g.drawString("99999", 350, 255);  
           } else{
             if (main.getPlayer().playerSkin == main.getTex().Player[1]){
               g.drawString("SELECTED", 315, 240);
@@ -299,7 +299,7 @@ public class Menu extends MouseAdapter{
           }
 
           if (main.getPlayer().skins[1] == 0){
-            g.drawString("BUY FOR", 575, 230); g.drawString("499,999", 575, 255);  
+            g.drawString("BUY FOR", 575, 230); g.drawString("499999", 585, 255);  
           } else{
             if (main.getPlayer().playerSkin == main.getTex().Player[2]){
               g.drawString("SELECTED", 565, 240);
@@ -307,7 +307,7 @@ public class Menu extends MouseAdapter{
           }
 
           if (main.getPlayer().skins[2] == 0){
-            g.drawString("BUY FOR", 825, 230); g.drawString("999,999", 825, 255);  
+            g.drawString("BUY FOR", 825, 230); g.drawString("999999", 835, 255);  
           } else{
             if (main.getPlayer().playerSkin == main.getTex().Player[3]){
               g.drawString("SELECTED", 815, 240);

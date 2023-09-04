@@ -1,4 +1,5 @@
 import java.awt.image.BufferedImage;
+import java.io.InputStream;
 import java.awt.Font;
 
 public class Texture {
@@ -41,8 +42,10 @@ public class Texture {
             PB_sheet = loader.loadImage("/PB_sheet.png"); 
             player_sheet = loader.loadImage("/player_sheet.png");
 
-            font = Font.createFont(Font.TRUETYPE_FONT, Main.class.getResourceAsStream("/font.ttf")); 
+            InputStream is = getClass().getResourceAsStream("/font.ttf");
+            font = Font.createFont(Font.TRUETYPE_FONT, is); 
             font = font.deriveFont(24f);
+            
         }catch(Exception e){
             e.printStackTrace();
         }
