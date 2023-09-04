@@ -33,10 +33,10 @@ public class Texture {
         try{
             fire_sheet = loader.loadImage("/rocket_sheet.png");
             HUD_sheet = loader.loadImage("/HUD_sheet.png"); 
-            background = loader.loadImage("/Sprites/Background.png"); 
-            cloud = loader.loadImage("/Sprites/Cloud.png"); 
-            Wall = loader.loadImage("/Sprites/Wall.png");  
-            PowerUps[0] = loader.loadImage("/Sprites/PB.png"); 
+            background = loader.loadImage("/Background.png"); 
+            cloud = loader.loadImage("/Cloud.png"); 
+            Wall = loader.loadImage("/Wall.png");  
+            PowerUps[0] = loader.loadImage("/PB.png"); 
             explosion_sheet = loader.loadImage("/explosion_sheet.png"); 
             PB_sheet = loader.loadImage("/PB_sheet.png"); 
             player_sheet = loader.loadImage("/player_sheet.png");
