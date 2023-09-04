@@ -3,7 +3,6 @@ import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
-import java.util.Random;
 
 import javax.swing.Timer;
 
@@ -14,19 +13,17 @@ public class HUD{
     private Camera cam;
     private Player player;
     
-    private Timer clock1; private Timer clock2;
-    private int second; private int second2;
+    private Timer clock1; private Timer clock2; private Timer clock3; 
+    private int second; private int second2; private int second3; 
     private DecimalFormat dFormat = new DecimalFormat("00");
-    private DecimalFormat ddFormat = new DecimalFormat("0000"); 
-    private Random random; 
+    private DecimalFormat ddFormat = new DecimalFormat("000000000"); 
     public String[] texts = new String[10]; 
 
     public HUD(Main main){
         this.main = main; 
         this.tex = this.main.getTex(); 
         this.cam = this.main.getCam(); 
-        this.player = this.main.getPlayer(); 
-        random = new Random(); 
+        this.player = this.main.getPlayer();
         this.texts[0] = "NO POWERUP SELECTED";
         this.texts[1] = "HEALTH INCREASE"; 
         this.texts[2] = "SLOW DOWN"; 
@@ -34,8 +31,10 @@ public class HUD{
         this.texts[4] = "SHRINK";
         this.texts[5] = "NOT ENOUGH ENERGY"; 
         this.texts[6] = "NO COST CAN BE RESET";
+        this.texts[7] = "SPEED IS AT A MINIMUM"; 
         Message();
         Message2();
+        Message3();
     }
 
     public void render(Graphics g){
@@ -54,6 +53,9 @@ public class HUD{
         g.drawImage(tex.HUD[14], -(int)cam.getX() + 5, 45, 50, 50, null);
         g.drawImage(tex.HUD[11], -(int)cam.getX() + 35, 40, 57, 57, null); 
         drawNum(dFormat.format(player.getPoints()), g, -(int)cam.getX() + 62, 43);
+
+        //Distance
+        drawNum(ddFormat.format(player.getDistance()), g, -(int)cam.getX() + 865, 15); 
 
         //PowerUps
 
@@ -81,6 +83,18 @@ public class HUD{
             else{
                 clock2.stop();
                 second2 = 0; 
+                player.pSelected = -1; 
+            }
+        }
+
+        if (player.pSelected == -4){
+            clock3.start();
+            if (second3 < 3){
+                g.drawString(texts[7], -(int)cam.getX() + 120, 715);
+            }
+            else{
+                clock3.stop();
+                second3 = 0; 
                 player.pSelected = -1; 
             }
         }
@@ -117,25 +131,10 @@ public class HUD{
         if (player.pSelected == 3){
             g.drawImage(tex.PowerUps[9], -(int)cam.getX() + 824, 610, 250, 200, null); 
             g.drawImage(tex.HUD[15], -(int)cam.getX() + 894, 655, 50, 50, null);
-            g.drawImage(tex.HUD[20], -(int)cam.getX() + 890, 670, 97, 97, null); 
+            g.drawImage(tex.HUD[20], -(int)cam.getX() + 890, 670, 97, 100, null); 
             g.drawString(texts[4], -(int)cam.getX() + 120, 715);
             drawNum(dFormat.format(player.getCosts()[3]), g, -(int)cam.getX() + 919, 655);
         }
-
-
-        //Clock 
-        /* 
-        if (second != 0 || minute != 0){
-            g.drawImage(t.HUD[12], -(int)cam.getX() + 900, 10, 57, 57, null); 
-            g.drawImage(t.HUD[11], -(int)cam.getX() + 925, 10, 57, 57, null); 
-            drawNum(ddMinute, g, -(int)cam.getX() + 950, 10);
-            g.drawImage(t.HUD[10], -(int)cam.getX() + 995, 10, 57, 57, null); 
-            drawNum(ddSecond, g, -(int)cam.getX() + 1010, 10);
-        }*/
-
-        drawNum(ddFormat.format(player.getDistance()), g, -(int)cam.getX() + 500, 30); 
-
-
     }
 
     private void drawNum(String s, Graphics g, int x, int y){
@@ -155,14 +154,21 @@ public class HUD{
     }catch(NullPointerException exception) {}
     }
 
-
+    public void resetMessage(){
+        clock1.stop(); 
+        clock2.stop();
+        clock3.stop();
+        second = 0; 
+        second2 = 0; 
+        second3 = 0; 
+    }
     private void Message(){
 
         clock1 = new Timer(1000, new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                second++; 
+                if (!main.paused) second++; 
             }
             
         });
@@ -174,10 +180,22 @@ public class HUD{
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                second2++; 
+                if (!main.paused) second2++; 
             }
             
         });
         
+    }
+
+    private void Message3(){
+
+        clock3 = new Timer(1000, new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!main.paused) second3++; 
+            }
+            
+        });
     }
 }

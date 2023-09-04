@@ -1,9 +1,9 @@
-import java.awt.Color;
+
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.util.Random; 
 
 import javax.swing.Timer;
@@ -23,31 +23,38 @@ public class Player extends GameObject{
     private int maxVelocity; 
     private int lives; 
     private int points;
-    private float distance;  
+    private int distance; 
+    
+    public BufferedImage playerSkin; 
 
     //PowerUps
-    private int[] Costs = new int[4]; 
-    public int counter = 0; 
-    public boolean Enter1 = false; 
-    public boolean Enter2 = false; 
-    public int pSelected = -1;
+    private int[] Costs; 
+    public int counter; 
+    public boolean Enter1; 
+    public boolean Enter2; 
+    public int pSelected;
 
-    private boolean hit = false; 
+    private boolean hit; 
     private Timer invincibilityTimer; 
     private Timer IAT; 
     private Timer distanceTimer; 
-    private int distanceFrames = 550;
-    private int invincibilityFrames = 0; 
-    private boolean stopR = false;  
+    private int distanceFrames;
+    private int invincibilityFrames; 
+    private boolean stopR;  
     private Timer shrinkTimer; 
-    private int shrinktime = 0; 
-    private int mTime = 7; 
+    private int shrinktime; 
+    private int mTime; 
     private int ogV; private int ogMV; 
-    private boolean shrinkUsed = false; 
+    private boolean shrinkUsed; 
 
     private Random random; 
 
-    public Player(float x, float y, int width, int height, ID id, Main main) {
+    public int totalScore; 
+    public int highScore; 
+    public int[] skins;
+    public int selected; 
+
+    public Player(float x, float y, int width, int height, ID id, Main main, int totalScore, int highScore) {
         super(x, y, width, height, id);
         this.main = main;
         this.tex = this.main.getTex(); 
@@ -58,7 +65,24 @@ public class Player extends GameObject{
         this.lives = 3; 
         this.points = 0; 
         this.distance = 0;
+        this.Costs = new int[4];
+        this.counter = 0;
+        this.Enter1 = false; 
+        this.Enter2 = false; 
+        this.pSelected = -1; 
+        this.hit = false; 
+        this.distanceFrames = 550;
+        this.invincibilityFrames = 0;  
+        this.stopR = false; 
+        this.shrinktime = 0; 
         this.random = new Random(); 
+        this.totalScore = totalScore; 
+        this.highScore = highScore; 
+        this.mTime = 7; 
+        this.shrinkUsed = false; 
+        this.skins = new int[7];
+        this.playerSkin = tex.Player[0];
+        this.selected = 0; 
         velX = 0; 
         velY = 0; 
         Clock();
@@ -142,6 +166,12 @@ public class Player extends GameObject{
             pSelected = -1; 
         }
 
+        if (lives == 0){
+            totalScore += distance; 
+            if (distance > highScore) highScore = distance; 
+            main.gameState = Main.STATE.MENU; 
+        }
+
         if (x > ((int)-cam.getX() - 25)) distance += Math.abs(velX/7)*(counter+1); 
 
         Collision();
@@ -174,18 +204,9 @@ public class Player extends GameObject{
         else fireAnimation.drawAnimation(g, (int)x - 85, (int)y - 110, 250, 250);
 
         if (!stopR){
-            if (Enter2) g.drawImage(tex.Player[0], (int)x - 27, (int)y - 52, 125, 130, null); 
-            else g.drawImage(tex.Player[0], (int)x - 85, (int)y - 111, 250, 250, null); 
+            if (Enter2) g.drawImage(playerSkin, (int)x - 27, (int)y - 52, 125, 130, null); 
+            else g.drawImage(playerSkin, (int)x - 85, (int)y - 111, 250, 250, null); 
         }  
-       
-        Graphics2D g2d = (Graphics2D)g;
-
-        //g2d.setColor(Color.black);
-
-        //g2d.draw(getBounds());
-        //g2d.draw(getBoundsTop());
-        //g2d.draw(getBoundsRight());
-
     }
 
     public Rectangle getBounds(){
@@ -263,7 +284,7 @@ public class Player extends GameObject{
 
             @Override
             public void actionPerformed(ActionEvent e) {
-              invincibilityFrames++; 
+              if (!main.paused) invincibilityFrames++; 
             }
             
         });
@@ -275,8 +296,10 @@ public class Player extends GameObject{
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                fireAnimation.setStop(!fireAnimation.getStop());
-                stopR = !stopR; 
+                if (!main.paused){
+                    fireAnimation.setStop(!fireAnimation.getStop());
+                    stopR = !stopR;
+                } 
             }
             
         });
@@ -288,7 +311,7 @@ public class Player extends GameObject{
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                distance++;  
+                if (main.gameState == Main.STATE.GAME) distance++;  
             }
             
         });
@@ -299,10 +322,41 @@ public class Player extends GameObject{
         shrinkTimer = new Timer(1000, new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
-                shrinktime++; 
+                if (!main.paused) shrinktime++; 
             }
             
         });
+    }
+
+    public void reset(){
+        x = 450; 
+        y = 300; 
+        velocity = 3; 
+        maxVelocity = 7; 
+        lives = 3; 
+        points = 0; 
+        distance = 0;
+        counter = 0;
+        Enter1 = false; 
+        Enter2 = false; 
+        pSelected = -1; 
+        hit = false; 
+        distanceFrames = 550;
+        invincibilityFrames = 0;  
+        stopR = false;
+        fireAnimation.setStop(false); 
+        shrinktime = 0;  
+        mTime = 7; 
+        shrinkUsed = false; 
+        Costs[0] = 3; Costs[1] = 5; Costs[2] = 7; Costs[3] = 9;   
+        main.velP = 0; 
+        main.velW = 0; 
+        cam.cameraSpeed = 1; 
+        cam.setX(0);
+        cam.setY(0);
+        invincibilityTimer.stop(); 
+        IAT.stop();
+        shrinkTimer.stop();
     }
     
 }

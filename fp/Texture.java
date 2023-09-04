@@ -21,10 +21,10 @@ public class Texture {
     public BufferedImage[] PowerUps = new BufferedImage[11]; 
     public BufferedImage[] Explosion = new BufferedImage[9]; 
 
-    public BufferedImage[] fire = new BufferedImage[9];
-    public BufferedImage[] HUD = new BufferedImage[25];
+    public BufferedImage[] fire = new BufferedImage[8];
+    public BufferedImage[] HUD = new BufferedImage[21];
 
-    public BufferedImage[] Player = new BufferedImage[10]; 
+    public BufferedImage[] Player = new BufferedImage[8]; 
 
     public Font font; 
     
@@ -60,6 +60,11 @@ public class Texture {
         Player[0] = ps.grabImage(1, 1, 150, 150); 
         Player[1] = ps.grabImage(2, 1, 150, 150); 
         Player[2] = ps.grabImage(3, 1, 150, 150);
+        Player[3] = ps.grabImage(4, 1, 150, 150); 
+        Player[4] = ps.grabImage(5, 1, 150, 150); 
+        Player[5] = ps.grabImage(6, 1, 150, 150);
+        Player[6] = ps.grabImage(7, 1, 150, 150); 
+        Player[7] = ps.grabImage(8, 1, 150, 150);
 
         //Rocket Fire
         fire[0] = fs.grabImage(1, 1, 150, 150);

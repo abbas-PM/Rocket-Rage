@@ -5,7 +5,7 @@ public class WallColumn {
     
     private ArrayList<Wall> walls; 
     private Random random; 
-    private int speed = 5; 
+    public int speed = 5; 
 
     private Main main; 
     private Handler handler;
@@ -41,7 +41,8 @@ public class WallColumn {
 
         for(int i = 0; i < walls.size(); i++){
      
-            if (walls.get(i).getX() < -cam.getX()){
+            if (walls.get(i).getX() < -cam.getX() - 100){
+                handler.removeObject(walls.get(i));
                 walls.remove(walls.get(i)); 
             }
         }

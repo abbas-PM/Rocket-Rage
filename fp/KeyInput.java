@@ -13,47 +13,54 @@ public class KeyInput extends KeyAdapter{
         this.main = main; 
         this.player = this.main.getPlayer(); 
         this.random = new Random(); 
-        baseCosts[0] = 3; baseCosts[1] = 5; baseCosts[2] = 7; baseCosts[3] = 9;  
+        this.baseCosts[0] = 3; this.baseCosts[1] = 5; this.baseCosts[2] = 7; this.baseCosts[3] = 9;  
     }
 
     public void keyPressed(KeyEvent evt){
 
         int c = evt.getKeyCode(); 
 
-        if (c == KeyEvent.VK_ESCAPE){
-            System.exit(0);
+        if (c == KeyEvent.VK_ESCAPE && (main.gameState == Main.STATE.GAME || main.gameState == Main.STATE.PAUSED)){
+            if (main.paused){
+                main.paused = false; 
+                main.gameState = Main.STATE.GAME;
+            }
+            else {
+                main.paused = true; 
+                main.gameState = Main.STATE.PAUSED; 
+            }
         }
 
         //Movements
-        if (c == KeyEvent.VK_LEFT){
+        if (c == KeyEvent.VK_LEFT && !main.paused){
             if (!player.KeyDown[4]) main.getPlayer().setVelX(-player.getVelocity());
             else main.getPlayer().setVelX(-player.getVM());
             player.KeyDown[0] = true; 
             player.KeyDown[1] = false; 
         }
 
-        if (c == KeyEvent.VK_RIGHT){
+        if (c == KeyEvent.VK_RIGHT && !main.paused){
             if (!player.KeyDown[4]) main.getPlayer().setVelX(player.getVelocity());
             else main.getPlayer().setVelX(player.getVM());
             player.KeyDown[0] = false; 
             player.KeyDown[1] = true; 
          }
 
-        if (c == KeyEvent.VK_UP){
+        if (c == KeyEvent.VK_UP && !main.paused){
             if (!player.KeyDown[4]) main.getPlayer().setVelY(-player.getVelocity());
             else main.getPlayer().setVelY(-player.getVM());
             player.KeyDown[2] = true; 
             player.KeyDown[3] = false; 
         }
 
-        if (c == KeyEvent.VK_DOWN){
+        if (c == KeyEvent.VK_DOWN && !main.paused){
             if (!player.KeyDown[4]) main.getPlayer().setVelY(player.getVelocity());
             else main.getPlayer().setVelY(player.getVM());
             player.KeyDown[2] = false; 
             player.KeyDown[3] = true; 
         }
 
-        if (c == KeyEvent.VK_SPACE){
+        if (c == KeyEvent.VK_SPACE && !main.paused){
             player.KeyDown[4] = true; 
             if (player.KeyDown[0]) main.getPlayer().setVelX(-player.getVM());
             if (player.KeyDown[1]) main.getPlayer().setVelX(player.getVM());
@@ -87,7 +94,7 @@ public class KeyInput extends KeyAdapter{
          }
 
         //Health powerUp is selected 
-        if (c == KeyEvent.VK_W && !player.Enter2){
+        if (c == KeyEvent.VK_W && !player.Enter2 && !main.paused){
 
             if (player.pSelected == 0){
 
@@ -104,25 +111,34 @@ public class KeyInput extends KeyAdapter{
         }  
 
         //Slow down powerUp is selected
-        if (c == KeyEvent.VK_A && !player.Enter2){
+        if (c == KeyEvent.VK_A && !player.Enter2 && !main.paused){
 
             if (player.pSelected == 1){
 
-                   if (player.getPoints() >= player.getCosts()[1]){
+                if (player.getPoints() < player.getCosts()[1]){
 
+                    player.pSelected = -2; 
+                }
+
+                else if (player.counter == 0 && player.getPoints() >= player.getCosts()[1]){
+
+                    player.pSelected = -4; 
+                }
+
+                else{
+                    
                     player.Enter1 = true; 
                     player.setPoints(player.getPoints() - player.getCosts()[1]);
                     player.setCosts(1, player.getCosts()[1] + 5); 
                     player.pSelected = -1; 
-
-                   } else player.pSelected = -2; 
+                }
 
             } else player.pSelected = 1; 
 
         }
         
         //Reset powerUp is selected
-        if (c == KeyEvent.VK_S && !player.Enter2){
+        if (c == KeyEvent.VK_S && !player.Enter2 && !main.paused){
 
             if (player.pSelected == 2){
 
@@ -178,9 +194,9 @@ public class KeyInput extends KeyAdapter{
             } else player.pSelected = 2; 
         }
 
-        if (c == KeyEvent.VK_D){
+        if (c == KeyEvent.VK_D && !main.paused){
 
-            if (player.pSelected == 3){
+            if (player.pSelected == 3 && !player.Enter2){
 
                 if (player.getPoints() >= player.getCosts()[3]){
                     player.Enter2 = true; 
