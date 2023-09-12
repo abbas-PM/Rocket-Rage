@@ -3,6 +3,7 @@ import java.awt.Rectangle;
   
 public abstract class GameObject {
     
+    //Attributes every game object has
     protected float x, y, velX, velY; 
     protected ID id; 
     protected int width; 
@@ -16,6 +17,7 @@ public abstract class GameObject {
         this.id = id; 
     }
 
+    //Methods every game object has
     public abstract void tick(); 
     public abstract void render(Graphics g); 
     public abstract Rectangle getBounds(); 
@@ -23,6 +25,7 @@ public abstract class GameObject {
     public abstract Rectangle getBoundsLeft(); 
     public abstract Rectangle getBoundsRight(); 
 
+    //Getters and Setters every game object has
     public void setX(float x){
         this.x = x; 
     }

@@ -6,12 +6,14 @@ import java.io.ObjectOutputStream;
 
 public class SaveLoad {
     
+    //Instance 
     Main main; 
 
     public SaveLoad(Main main){
         this.main = main; 
     }
 
+    //Method used to save the game
     public void save(){
 
         try{
@@ -31,6 +33,7 @@ public class SaveLoad {
         }
     }
 
+    //Method used to load a savefile
     public void load(){
 
         try{

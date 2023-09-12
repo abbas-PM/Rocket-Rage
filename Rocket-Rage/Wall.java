@@ -1,10 +1,9 @@
-import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
 public class Wall extends GameObject{
 
+    //Instances
     private Main main; 
     private Texture tex; 
     private Camera cam; 
@@ -20,22 +19,22 @@ public class Wall extends GameObject{
 
     @Override
     public void tick() {
+
+        //Make the walls move right to left
         x -= velX;
+        //Remove walls for gameobject list when wall reaches end of window
         if (x < (-cam.getX() - 150)) handler.removeObject(this);
         
     }
 
     @Override
     public void render(Graphics g) {
+        //Drawing wall
         g.drawImage(tex.Wall, (int)x, (int)y, 99, 99, null);  
-        Graphics2D g2d = (Graphics2D)g;
-        g2d.setColor(Color.white);
-
-        //g2d.draw(getBounds());
 
     }
 
-    @Override
+    //Hitbox for wall
     public Rectangle getBounds() {
         return new Rectangle((int)x, (int)y, width, height - 8);
     }

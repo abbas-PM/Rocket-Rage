@@ -1,4 +1,3 @@
-
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -10,34 +9,43 @@ import javax.swing.Timer;
 
 public class Player extends GameObject{
 
+    //Instances
     private Main main; 
     private Texture tex; 
     private Handler handler;
     private Camera cam; 
 
+    //Animation used for player sprite
     private Animation fireAnimation; 
 
+    //Used to see which key is pressed
     public boolean[] KeyDown; 
 
+    //Used for player's velocity
+    private int velP; 
     private int velocity; 
     private int maxVelocity; 
+
+    //Attributes player has during the game
     private int lives; 
     private int points;
     private int distance; 
-    
-    public BufferedImage playerSkin; 
 
     //PowerUps
     private int[] Costs; 
-    public int counter; 
-    public boolean Enter1; 
-    public boolean Enter2; 
+    private int[] baseCosts = new int[4]; 
+    private int counter; 
+    public boolean shrinkSelected; 
     public int pSelected;
 
-    private boolean hit; 
+    //For when player is hit
+    private boolean hit;
+
+    //Used for powerups
     private Timer invincibilityTimer; 
     private Timer IAT; 
     private Timer distanceTimer; 
+    private Timer Speed; 
     private int distanceFrames;
     private int invincibilityFrames; 
     private boolean stopR;  
@@ -46,13 +54,14 @@ public class Player extends GameObject{
     private int mTime; 
     private int ogV; private int ogMV; 
     private boolean shrinkUsed; 
-
     private Random random; 
 
+    //Attributes that is stored when saving a game
     public int totalScore; 
     public int highScore; 
     public int[] skins;
     public int selected; 
+    public BufferedImage playerSkin; 
 
     public Player(float x, float y, int width, int height, ID id, Main main, int totalScore, int highScore) {
         super(x, y, width, height, id);
@@ -60,6 +69,7 @@ public class Player extends GameObject{
         this.tex = this.main.getTex(); 
         this.handler = this.main.getHandler(); 
         this.cam = this.main.getCam(); 
+        this.velP = 0; 
         this.velocity = 3; 
         this.maxVelocity = 7; 
         this.lives = 3; 
@@ -67,8 +77,7 @@ public class Player extends GameObject{
         this.distance = 0;
         this.Costs = new int[4];
         this.counter = 0;
-        this.Enter1 = false; 
-        this.Enter2 = false; 
+        this.shrinkSelected = false; 
         this.pSelected = -1; 
         this.hit = false; 
         this.distanceFrames = 550;
@@ -85,23 +94,24 @@ public class Player extends GameObject{
         this.selected = 0; 
         velX = 0; 
         velY = 0; 
-        Clock();
-        Clock2(); 
-        Clock3();
-        Clock4(); 
+        Timers(); 
         distanceTimer.start();
+        Speed.start();
         fireAnimation = new Animation(tex.fire[0], tex.fire[1], tex.fire[2], tex.fire[3], tex.fire[4], tex.fire[5], tex.fire[6], tex.fire[7]); 
         KeyDown = new boolean[5];
-        Costs[0] = 3; Costs[1] = 5; Costs[2] = 7; Costs[3] = 9;   
+        this.Costs[0] = 3; this.Costs[1] = 5; this.Costs[2] = 7; this.Costs[3] = 9;   
+        this.baseCosts[0] = 3; this.baseCosts[1] = 5; this.baseCosts[2] = 7; this.baseCosts[3] = 9;  
     }
 
     @Override
     public void tick() {
 
+        //For movement
         x += velX; 
         y += velY;   
 
-        if (Enter2){
+        //Clamping the player in the window, different values for when player is shrinked
+        if (shrinkSelected){
             x = main.clamp((int)x, ((int)-cam.getX()) - 25, ((int)-cam.getX()) + 1023);
             y = main.clamp((int)y, 0, 623); 
         }
@@ -111,6 +121,7 @@ public class Player extends GameObject{
             y = main.clamp((int)y, 5, 615); 
         }
 
+        //Changing the speed of the fire animation of the rocket
         int speedFrames = 12; 
 
         if((KeyDown[0] || KeyDown[1] || KeyDown[2] || KeyDown[3]) && !KeyDown[4]) speedFrames = 5; 
@@ -119,14 +130,16 @@ public class Player extends GameObject{
 
         fireAnimation.runAnimation(speedFrames);
 
-        if (main.velP >= 60 && counter < 3 && pSelected != 3){
+        //Increases speed of game
+        if (velP >= 60 && counter < 3 && pSelected != 3){
             velocity += 1;
             maxVelocity += 2; 
             counter += 1; 
-            main.velP = 0;
-            cam.cameraSpeed += 1; 
+            velP = 0;
+            main.getCam().setCameraSpeed(main.getCam().getCameraSpeed() + 1); 
         } 
 
+        //Creating a max value for lives, costs and points
         lives = main.clamp(lives, 0, 99);
         Costs[0] = main.clamp(Costs[0], 0, 99); 
         Costs[1] = main.clamp(Costs[1], 0, 99); 
@@ -134,6 +147,8 @@ public class Player extends GameObject{
         Costs[3] = main.clamp(Costs[3], 0, 99); 
         points = main.clamp(points, 0, 999); 
 
+        //If player is hit, they get invincibility frames, this happens when those
+        //frames should stop
         if (invincibilityFrames == 3){
             hit = false; 
             invincibilityFrames = 0; 
@@ -143,7 +158,8 @@ public class Player extends GameObject{
             stopR = false; 
         }
 
-        if (Enter2 && !shrinkUsed){
+        //When shrink power up is selected
+        if (shrinkSelected && !shrinkUsed){
             int randWay = random.nextInt(0, 3);
             if (randWay == 0) mTime = 7; 
             else if (randWay == 1) mTime = 9; 
@@ -156,33 +172,38 @@ public class Player extends GameObject{
             shrinkUsed = true; 
         }
 
+        //When the shrink power up ends
         if (shrinktime == mTime){
             shrinkTimer.stop();
             shrinktime = 0; 
             velocity = ogV; 
             maxVelocity = ogMV; 
-            Enter2 = false; 
+            shrinkSelected = false; 
             shrinkUsed = false; 
             pSelected = -1; 
         }
 
+        //When player runs out of lives
         if (lives == 0){
             totalScore += distance; 
             if (distance > highScore) highScore = distance; 
             main.gameState = Main.STATE.MENU; 
         }
 
+        //Incrementing distance value
         if (x > ((int)-cam.getX() - 25)) distance += Math.abs(velX/7)*(counter+1); 
 
         Collision();
     }
 
+    //Method to handle any collisions between player and another game object
     public void Collision(){
 
         for(int i = 0; i < handler.object.size(); i++){
 
             GameObject tempObject = handler.object.get(i); 
 
+            //For when player collides with a wall
             if (tempObject.getID() == ID.Wall){
 
                 if ((getBoundsRight().intersects(tempObject.getBounds()) || getBoundsTop().intersects(tempObject.getBounds()) || getBounds().intersects(tempObject.getBounds())) && !hit){
@@ -197,25 +218,106 @@ public class Player extends GameObject{
         }
     }
 
+    //Health increase powerup
+    public void healthIncrease(){
+        this.lives += 3; 
+        this.points -= Costs[0];
+        Costs[0] += 3; 
+        pSelected = -1; 
+    }
+
+    //Slow down powerup
+    public void slowDown(){
+        main.getWalls().setVELW(0);
+        main.getWalls().setSpeed(5);
+        this.velocity = 3; 
+        this.maxVelocity = 7; 
+        main.getCam().setCameraSpeed(1);
+        velP = 0; 
+        counter = 0; 
+
+        this.points -= Costs[1]; 
+        Costs[1] += 5; 
+        pSelected = -1; 
+    }
+
+    //Cost reset powerup
+    public void costReset(){
+        int counter = 4; 
+        for (int i = 0; i < 4; i++){
+            if (Costs[i] == baseCosts[i]) counter--;  
+        }
+
+        if (counter == 0){
+            pSelected = -3;  
+        }
+
+        else if (counter == 1){
+            for (int i = 0; i < 4; i++){
+                if (Costs[i] != baseCosts[i]){
+                    this.points -= Costs[2]; 
+                    Costs[2] += 7; 
+                    Costs[i] = baseCosts[i];
+                    break; 
+                }
+            } 
+            pSelected = -1; 
+        }
+
+        else if (counter == 2 || counter == 3){
+            int randWay = random.nextInt(1, counter+1); 
+            int counter2 = 0; 
+            for(int i = 0; i < 4; i++){
+                if (Costs[i] != baseCosts[i]){
+                    counter2++; 
+                    if (counter2==randWay){
+                        this.points -= Costs[2]; 
+                        Costs[2] += 7; 
+                        Costs[i] = baseCosts[i];
+                        break; 
+                    }
+                }
+            }
+            pSelected = -1; 
+        }
+
+        else if (counter == 4){
+            this.points -= Costs[2]; 
+            int randWay = random.nextInt(0, 4);
+            Costs[randWay] = baseCosts[randWay];
+            pSelected = -1; 
+        }
+    }
+
+    //shrink powerup
+    public void shrink(){
+        shrinkSelected = true; 
+        this.points -= Costs[3]; 
+        Costs[3] += 9; 
+    }
+
     @Override
     public void render(Graphics g) {
 
-        if (Enter2) fireAnimation.drawAnimation(g, (int)x - 27, (int)y - 51, 125, 130);
+        //Drawing the fire animation of the rocket
+        if (shrinkSelected) fireAnimation.drawAnimation(g, (int)x - 27, (int)y - 51, 125, 130);
         else fireAnimation.drawAnimation(g, (int)x - 85, (int)y - 110, 250, 250);
 
+        //Drawing the rocket
         if (!stopR){
-            if (Enter2) g.drawImage(playerSkin, (int)x - 27, (int)y - 52, 125, 130, null); 
+            if (shrinkSelected) g.drawImage(playerSkin, (int)x - 27, (int)y - 52, 125, 130, null); 
             else g.drawImage(playerSkin, (int)x - 85, (int)y - 111, 250, 250, null); 
         }  
     }
 
+    //Bottom HitBox
     public Rectangle getBounds(){
-        if (Enter2) return new Rectangle((int)(x+(width/8)) + 17,(int)y+(height/4)+5,(width/4) - 8,(height/4)+4);
+        if (shrinkSelected) return new Rectangle((int)(x+(width/8)) + 17,(int)y+(height/4)+5,(width/4) - 8,(height/4)+4);
         else return new Rectangle((int)(x+(width/4)) + 1,(int)y+(height/2),(width/2) - 8,(height/2)+4);
     }
     //Top Hitbox 
     public Rectangle getBoundsTop(){
-        if (Enter2) return new Rectangle((int)(x+(width/8)) + 17 ,(int)y + 2,(width/4) - 8,height/4 + 3);
+        if (shrinkSelected) return new Rectangle((int)(x+(width/8)) + 17 ,(int)y + 2,(width/4) - 8,height/4 + 3);
         else return new Rectangle((int)(x+(width/4)) + 1 ,(int)y - 3,(width/2) - 8,height/2 + 3);
     }
     //Left Hitbox 
@@ -224,7 +326,7 @@ public class Player extends GameObject{
     }
     //Right Hitbox 
     public Rectangle getBoundsRight(){
-        if (Enter2) return new Rectangle((int)x+(width/2),(int)y + 2,15,(height/2)+7);
+        if (shrinkSelected) return new Rectangle((int)x+(width/2),(int)y + 2,15,(height/2)+7);
         else return new Rectangle((int)x+width-27,(int)y-2,29,height+5);
     }
 
@@ -277,8 +379,13 @@ public class Player extends GameObject{
     public void setCosts(int index, int value){
         this.Costs[index] = value; 
     }
+
+    public int getCounter(){
+        return this.counter; 
+    }
     
-    private void Clock(){
+    //Timers used for powerups and speed of game
+    private void Timers(){
 
         invincibilityTimer = new Timer(1000, new ActionListener() {
 
@@ -288,9 +395,6 @@ public class Player extends GameObject{
             }
             
         });
-    }
-
-    private void Clock2(){
 
         IAT = new Timer(100, new ActionListener() {
 
@@ -303,9 +407,6 @@ public class Player extends GameObject{
             }
             
         });
-    }
-
-    private void Clock3(){
 
         distanceTimer = new Timer(distanceFrames, new ActionListener() {
 
@@ -315,9 +416,6 @@ public class Player extends GameObject{
             }
             
         });
-    }
-
-    private void Clock4(){
 
         shrinkTimer = new Timer(1000, new ActionListener() {
 
@@ -326,8 +424,22 @@ public class Player extends GameObject{
             }
             
         });
+
+        Speed = new Timer(1000, new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+              if (main.gameState == Main.STATE.GAME){
+                main.getWalls().setVELW(main.getWalls().getVELW() + 1); 
+                velP++;  
+              }
+            }
+            
+            
+          });
     }
 
+    //When the game ends and starts the game again
     public void reset(){
         x = 450; 
         y = 300; 
@@ -337,8 +449,7 @@ public class Player extends GameObject{
         points = 0; 
         distance = 0;
         counter = 0;
-        Enter1 = false; 
-        Enter2 = false; 
+        shrinkSelected = false; 
         pSelected = -1; 
         hit = false; 
         distanceFrames = 550;
@@ -349,9 +460,9 @@ public class Player extends GameObject{
         mTime = 7; 
         shrinkUsed = false; 
         Costs[0] = 3; Costs[1] = 5; Costs[2] = 7; Costs[3] = 9;   
-        main.velP = 0; 
-        main.velW = 0; 
-        cam.cameraSpeed = 1; 
+        velP = 0; 
+        main.getWalls().setVELW(0); 
+        main.getCam().setCameraSpeed(1);
         cam.setX(0);
         cam.setY(0);
         invincibilityTimer.stop(); 

@@ -4,12 +4,14 @@ import java.awt.Font;
 
 public class Texture {
     
+    //All spritesheets
     SpriteSheet fs; 
     SpriteSheet hs; 
     SpriteSheet es;
     SpriteSheet pb; 
     SpriteSheet ps;  
 
+    //Used to load each sprite sheet
     private BufferedImage fire_sheet = null; 
     private BufferedImage HUD_sheet = null; 
     private BufferedImage explosion_sheet = null; 
@@ -19,6 +21,8 @@ public class Texture {
     public BufferedImage background = null; 
     public BufferedImage cloud = null;  
     public BufferedImage Wall = null;
+
+    //Arrays that store each sprite in a spritesheet
     public BufferedImage[] PowerUps = new BufferedImage[11]; 
     public BufferedImage[] Explosion = new BufferedImage[9]; 
 
@@ -27,8 +31,10 @@ public class Texture {
 
     public BufferedImage[] Player = new BufferedImage[8]; 
 
+    //Custom font
     public Font font; 
     
+    //Loading all the spritesheets
     public Texture(){
         BufferedImageLoader loader = new BufferedImageLoader(); 
         try{
@@ -42,7 +48,7 @@ public class Texture {
             PB_sheet = loader.loadImage("/PB_sheet.png"); 
             player_sheet = loader.loadImage("/player_sheet.png");
 
-            InputStream is = getClass().getResourceAsStream("/font.ttf");
+            InputStream is = getClass().getResourceAsStream("/font.TTF");
             font = Font.createFont(Font.TRUETYPE_FONT, is); 
             font = font.deriveFont(24f);
             
@@ -50,6 +56,7 @@ public class Texture {
             e.printStackTrace();
         }
 
+        //Used to get each sprite in a spritesheet
         fs = new SpriteSheet(fire_sheet);
         hs = new SpriteSheet(HUD_sheet);
         es = new SpriteSheet(explosion_sheet); 
@@ -58,6 +65,7 @@ public class Texture {
         getTextures();
     }
 
+    //Storing each sprite in arrays
     private void getTextures(){
         //Player skins
         Player[0] = ps.grabImage(1, 1, 150, 150); 

@@ -6,6 +6,7 @@ import java.awt.event.MouseEvent;
 
 public class Menu extends MouseAdapter{
 
+    //Instances
     private Main main; 
     private Handler handler; 
     private Texture tex;
@@ -16,170 +17,182 @@ public class Menu extends MouseAdapter{
         this.tex = this.main.getTex(); 
     }
 
+    //Method to see where a mouse clicked
     public void mousePressed(MouseEvent e){
         int mx = e.getX(); 
         int my = e.getY(); 
         
+        //If the game is in the menu
         if(main.gameState == Main.STATE.MENU){
-      
-            //Play button
-            if(mouseOver(mx, my,460,200,200,64)){
-              //Start the game 
+          //Play button
+          if(mouseOver(mx, my,460,200,200,64)){
 
-              if (main.getPlayer().totalScore > 0){
-                main.getPlayer().reset();
-                main.getHUD().resetMessage();
-                handler.ClearAll();
-                handler.addFirst(main.getPlayer());
-                WallColumn wc = new WallColumn(main); 
-                main.setWallColumn(wc);
-              }
-              main.gameState = Main.STATE.GAME;
-            }
+            //Start the game 
+            if (main.getPlayer().totalScore > 0){
+              main.getPlayer().reset();
+              main.getHUD().resetMessage();
+              handler.ClearAll();
+              handler.addFirst(main.getPlayer());
+              WallColumn wc = new WallColumn(main); 
+              main.setWallColumn(wc);
+            } 
+
+            main.gameState = Main.STATE.GAME;
+          }
             
             //Help button
             if(mouseOver(mx, my,460,300,200,64)){
               main.gameState = Main.STATE.HELP;//Put the game in the menu 
-            }
+          }
 
-            //Load and Save 
+            //Load and Save button
             if(mouseOver(mx, my,460,400,200,64)){
               main.gameState = Main.STATE.LOAD;//Put the game in the menu 
-            }
+          }
 
+            //Shop button
             if(mouseOver(mx, my,460,500,200,64)){
               main.gameState = Main.STATE.SHOP;//Put the game in the menu 
-            }
+          }
             
             //Quit button
             if(mouseOver(mx, my,460,600,200,64)){
               System.exit(1);//Exit the game
+          }
+        }
+
+        //If the game is in help page
+        else if (main.gameState == Main.STATE.HELP){
+          if(mouseOver(mx, my, 460, 650, 200, 64)){
+            main.gameState = Main.STATE.MENU;
+          }
+        }
+
+        //If the game is load save page
+        else if (main.gameState == Main.STATE.LOAD){
+
+          //If player saves
+          if(mouseOver(mx, my, 460, 200, 200, 64)){
+            main.getLoad().save();
+            main.gameState = Main.STATE.MENU;
+          }
+
+          //If player loads
+          if(mouseOver(mx, my, 460, 300, 200, 64)){
+            main.getLoad().load();
+            main.gameState = Main.STATE.MENU;
+          }
+
+          //If player returns to menu
+          if(mouseOver(mx, my, 460, 400, 200, 64)){
+            main.gameState = Main.STATE.MENU;
             }
           }
 
-          else if (main.gameState == Main.STATE.HELP){
-            if(mouseOver(mx, my, 460, 650, 200, 64)){
-                main.gameState = Main.STATE.MENU;
-              }
+        //If the player is in the shop page
+        else if (main.gameState == Main.STATE.SHOP){
+          if(mouseOver(mx, my, 460, 600, 200, 64)){
+            main.gameState = Main.STATE.MENU;
           }
 
-          else if (main.gameState == Main.STATE.LOAD){
-            if(mouseOver(mx, my, 460, 200, 200, 64)){
-              main.getLoad().save();
-              main.gameState = Main.STATE.MENU;
-            }
+          //Each button for buying/selecting a certain skin
 
-            if(mouseOver(mx, my, 460, 300, 200, 64)){
-              main.getLoad().load();
-              main.gameState = Main.STATE.MENU;
-            }
-
-            if(mouseOver(mx, my, 460, 400, 200, 64)){
-                main.gameState = Main.STATE.MENU;
-              }
+          if(mouseOver(mx, my, 60, 200, 200, 64)){
+            main.getPlayer().playerSkin = main.getTex().Player[0];
+            main.getPlayer().selected = 0; 
           }
 
-          else if (main.gameState == Main.STATE.SHOP){
-            if(mouseOver(mx, my, 460, 600, 200, 64)){
-                main.gameState = Main.STATE.MENU;
-              }
-
-            if(mouseOver(mx, my, 60, 200, 200, 64)){
-              main.getPlayer().playerSkin = main.getTex().Player[0];
-              main.getPlayer().selected = 0; 
+          if(mouseOver(mx, my, 310, 200, 200, 64)){
+            if (main.getPlayer().skins[0] == 0 && main.getPlayer().totalScore >= 99999){
+              main.getPlayer().skins[0] = 1; 
+              main.getPlayer().totalScore -= 99999; 
+              main.getPlayer().playerSkin = main.getTex().Player[1];
+              main.getPlayer().selected = 1; 
             }
-
-            if(mouseOver(mx, my, 310, 200, 200, 64)){
-              if (main.getPlayer().skins[0] == 0 && main.getPlayer().totalScore >= 99999){
-                main.getPlayer().skins[0] = 1; 
-                main.getPlayer().totalScore -= 99999; 
-                main.getPlayer().playerSkin = main.getTex().Player[1];
-                main.getPlayer().selected = 1; 
-              }
-              else if (main.getPlayer().skins[0] == 1){
-                main.getPlayer().playerSkin = main.getTex().Player[1];
-                main.getPlayer().selected = 1; 
-              }
-            }
-
-            if(mouseOver(mx, my, 560, 200, 200, 64)){
-              if (main.getPlayer().skins[1] == 0 && main.getPlayer().totalScore >= 499999){
-                main.getPlayer().skins[1] = 1; 
-                main.getPlayer().totalScore -= 499999; 
-                main.getPlayer().playerSkin = main.getTex().Player[2];
-                main.getPlayer().selected = 2; 
-              }
-              else if (main.getPlayer().skins[1] == 1){
-                main.getPlayer().playerSkin = main.getTex().Player[2];
-                main.getPlayer().selected = 2; 
-              }
-            }
-
-            if(mouseOver(mx, my, 810, 200, 200, 64)){
-              if (main.getPlayer().skins[2] == 0 && main.getPlayer().totalScore >= 999999){
-                main.getPlayer().skins[2] = 1; 
-                main.getPlayer().totalScore -= 999999; 
-                main.getPlayer().playerSkin = main.getTex().Player[3];
-                main.getPlayer().selected = 3; 
-              }
-              else if (main.getPlayer().skins[2] == 1){
-                main.getPlayer().playerSkin = main.getTex().Player[3];
-                main.getPlayer().selected = 3; 
-              }
-            }
-
-            if(mouseOver(mx, my, 60, 400, 200, 64)){
-              if (main.getPlayer().skins[3] == 0 && main.getPlayer().totalScore >= 4999999){
-                main.getPlayer().skins[3] = 1; 
-                main.getPlayer().totalScore -= 4999999; 
-                main.getPlayer().playerSkin = main.getTex().Player[4];
-                main.getPlayer().selected = 4; 
-              }
-              else if (main.getPlayer().skins[3] == 1){
-                main.getPlayer().playerSkin = main.getTex().Player[4];
-                main.getPlayer().selected = 4; 
-              }
-            }
-
-            if(mouseOver(mx, my, 310, 400, 200, 64)){
-              if (main.getPlayer().skins[4] == 0 && main.getPlayer().totalScore >= 9999999){
-                main.getPlayer().skins[4] = 1; 
-                main.getPlayer().totalScore -= 9999999; 
-                main.getPlayer().playerSkin = main.getTex().Player[5];
-                main.getPlayer().selected = 5; 
-              }
-              else if (main.getPlayer().skins[4] == 1){
-                main.getPlayer().playerSkin = main.getTex().Player[5];
-                main.getPlayer().selected = 5; 
-              }
-            }
-
-            if(mouseOver(mx, my, 560, 400, 200, 64)){
-              if (main.getPlayer().skins[5] == 0 && main.getPlayer().totalScore >= 49999999){
-                main.getPlayer().skins[5] = 1; 
-                main.getPlayer().totalScore -= 49999999; 
-                main.getPlayer().playerSkin = main.getTex().Player[6];
-                main.getPlayer().selected = 6; 
-              }
-              else if (main.getPlayer().skins[5] == 1){
-                main.getPlayer().playerSkin = main.getTex().Player[6];
-                main.getPlayer().selected = 6; 
-              }
-            }
-
-            if(mouseOver(mx, my, 810, 400, 200, 64)){
-              if (main.getPlayer().skins[6] == 0 && main.getPlayer().totalScore >= 99999999){
-                main.getPlayer().skins[6] = 1; 
-                main.getPlayer().totalScore -= 99999999; 
-                main.getPlayer().playerSkin = main.getTex().Player[7];
-                main.getPlayer().selected = 7; 
-              }
-              else if (main.getPlayer().skins[6] == 1){
-                main.getPlayer().playerSkin = main.getTex().Player[7];
-                main.getPlayer().selected = 7; 
-              }
+            else if (main.getPlayer().skins[0] == 1){
+              main.getPlayer().playerSkin = main.getTex().Player[1];
+              main.getPlayer().selected = 1; 
             }
           }
+
+          if(mouseOver(mx, my, 560, 200, 200, 64)){
+            if (main.getPlayer().skins[1] == 0 && main.getPlayer().totalScore >= 499999){
+              main.getPlayer().skins[1] = 1; 
+              main.getPlayer().totalScore -= 499999; 
+              main.getPlayer().playerSkin = main.getTex().Player[2];
+              main.getPlayer().selected = 2; 
+            }
+            else if (main.getPlayer().skins[1] == 1){
+              main.getPlayer().playerSkin = main.getTex().Player[2];
+              main.getPlayer().selected = 2; 
+            }
+          }
+
+          if(mouseOver(mx, my, 810, 200, 200, 64)){
+            if (main.getPlayer().skins[2] == 0 && main.getPlayer().totalScore >= 999999){
+              main.getPlayer().skins[2] = 1; 
+              main.getPlayer().totalScore -= 999999; 
+              main.getPlayer().playerSkin = main.getTex().Player[3];
+              main.getPlayer().selected = 3; 
+            }
+            else if (main.getPlayer().skins[2] == 1){
+              main.getPlayer().playerSkin = main.getTex().Player[3];
+              main.getPlayer().selected = 3; 
+            }
+          }
+
+          if(mouseOver(mx, my, 60, 400, 200, 64)){
+            if (main.getPlayer().skins[3] == 0 && main.getPlayer().totalScore >= 4999999){
+              main.getPlayer().skins[3] = 1; 
+              main.getPlayer().totalScore -= 4999999; 
+              main.getPlayer().playerSkin = main.getTex().Player[4];
+              main.getPlayer().selected = 4; 
+            }
+            else if (main.getPlayer().skins[3] == 1){
+              main.getPlayer().playerSkin = main.getTex().Player[4];
+              main.getPlayer().selected = 4; 
+            }
+          }
+
+          if(mouseOver(mx, my, 310, 400, 200, 64)){
+            if (main.getPlayer().skins[4] == 0 && main.getPlayer().totalScore >= 9999999){
+              main.getPlayer().skins[4] = 1; 
+              main.getPlayer().totalScore -= 9999999; 
+              main.getPlayer().playerSkin = main.getTex().Player[5];
+              main.getPlayer().selected = 5; 
+            }
+            else if (main.getPlayer().skins[4] == 1){
+              main.getPlayer().playerSkin = main.getTex().Player[5];
+              main.getPlayer().selected = 5; 
+            }
+          }
+
+          if(mouseOver(mx, my, 560, 400, 200, 64)){
+            if (main.getPlayer().skins[5] == 0 && main.getPlayer().totalScore >= 49999999){
+              main.getPlayer().skins[5] = 1; 
+              main.getPlayer().totalScore -= 49999999; 
+              main.getPlayer().playerSkin = main.getTex().Player[6];
+              main.getPlayer().selected = 6; 
+            }
+            else if (main.getPlayer().skins[5] == 1){
+              main.getPlayer().playerSkin = main.getTex().Player[6];
+              main.getPlayer().selected = 6; 
+            }
+          }
+
+          if(mouseOver(mx, my, 810, 400, 200, 64)){
+            if (main.getPlayer().skins[6] == 0 && main.getPlayer().totalScore >= 99999999){
+              main.getPlayer().skins[6] = 1; 
+              main.getPlayer().totalScore -= 99999999; 
+              main.getPlayer().playerSkin = main.getTex().Player[7];
+              main.getPlayer().selected = 7; 
+            }
+            else if (main.getPlayer().skins[6] == 1){
+              main.getPlayer().playerSkin = main.getTex().Player[7];
+              main.getPlayer().selected = 7; 
+            }
+          }
+        }
     }
 
     public void mouseReleased(MouseEvent e) {}
@@ -201,6 +214,7 @@ public class Menu extends MouseAdapter{
 
     public void tick(){}
 
+    //Method to display everything in the menu, shop, or load and save page
     public void render(Graphics g){
 
         if (main.gameState == Main.STATE.MENU){

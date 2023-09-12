@@ -8,16 +8,21 @@ import javax.swing.Timer;
 
 public class HUD{
     
+    //Instances
     private Main main; 
     private Texture tex;
     private Camera cam;
     private Player player;
-    
-    private Timer clock1; private Timer clock2; private Timer clock3; 
+
+    //Used to display certain messages for a certain amount of time
+    private Timer clock1; private Timer clock2; private Timer clock3;
     private int second; private int second2; private int second3; 
+
+    //To display certain values
     private DecimalFormat dFormat = new DecimalFormat("00");
     private DecimalFormat ddFormat = new DecimalFormat("000000000"); 
-    public String[] texts = new String[10]; 
+
+    public String[] texts = new String[10];//All messages 
 
     public HUD(Main main){
         this.main = main; 
@@ -32,33 +37,32 @@ public class HUD{
         this.texts[5] = "NOT ENOUGH ENERGY"; 
         this.texts[6] = "NO COST CAN BE RESET";
         this.texts[7] = "SPEED IS AT A MINIMUM"; 
-        Message();
-        Message2();
-        Message3();
+        Messages();
     }
 
+    //Used to display various things during the game
     public void render(Graphics g){
 
+        //No powerup selected box
         g.setColor(Color.black);
         g.fillRect(-(int)cam.getX() + 900, 655, 93, 95);
 
         g.setFont(tex.font);
 
-        //Life
+        //Displaying Life
         g.drawImage(tex.HUD[13], -(int)cam.getX() + 10, 0, 70, 70, null);
         g.drawImage(tex.HUD[11], -(int)cam.getX() + 35, 5, 57, 57, null); 
         drawNum(dFormat.format(player.getLives()), g, -(int)cam.getX() + 62, 7);
 
-        //Energy
+        //Displaying Points
         g.drawImage(tex.HUD[14], -(int)cam.getX() + 5, 45, 50, 50, null);
         g.drawImage(tex.HUD[11], -(int)cam.getX() + 35, 40, 57, 57, null); 
         drawNum(dFormat.format(player.getPoints()), g, -(int)cam.getX() + 62, 43);
 
-        //Distance
+        //Displaying Distance
         drawNum(ddFormat.format(player.getDistance()), g, -(int)cam.getX() + 865, 15); 
 
-        //PowerUps
-
+        //Timed messages
         if (player.pSelected == -1){
             g.drawString(texts[0], -(int)cam.getX() + 120, 715);
         }
@@ -99,6 +103,8 @@ public class HUD{
             }
         }
 
+        //Displaying PowerUps: 
+
         //1)
         if (player.pSelected == 0){
             g.drawImage(tex.PowerUps[1], -(int)cam.getX() + 824, 610, 250, 200, null);
@@ -137,6 +143,7 @@ public class HUD{
         }
     }
 
+    //Methods used to display a number with sprites 
     private void drawNum(String s, Graphics g, int x, int y){
 
         try{
@@ -154,6 +161,7 @@ public class HUD{
     }catch(NullPointerException exception) {}
     }
 
+    //Reseting any timed messages
     public void resetMessage(){
         clock1.stop(); 
         clock2.stop();
@@ -162,7 +170,9 @@ public class HUD{
         second2 = 0; 
         second3 = 0; 
     }
-    private void Message(){
+
+    //Method to create multiple timers for timed messages
+    private void Messages(){
 
         clock1 = new Timer(1000, new ActionListener() {
 
@@ -172,9 +182,6 @@ public class HUD{
             }
             
         });
-    }
-
-    private void Message2(){
 
         clock2 = new Timer(1000, new ActionListener() {
 
@@ -184,10 +191,6 @@ public class HUD{
             }
             
         });
-        
-    }
-
-    private void Message3(){
 
         clock3 = new Timer(1000, new ActionListener() {
 

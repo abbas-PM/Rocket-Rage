@@ -5,8 +5,9 @@ import javax.imageio.ImageIO;
 
 public class BufferedImageLoader {
     
-    private BufferedImage image; 
+    private BufferedImage image;//Used to store an image 
 
+    //Method to try and find a certain image and return it
     public BufferedImage loadImage(String path){
 
         try{

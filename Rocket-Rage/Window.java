@@ -5,7 +5,7 @@ public class Window extends Canvas{
     
     public Window(int width, int height, String title, Main main){
 
-        JFrame frame = new JFrame(title);
+        JFrame frame = new JFrame(title);//JFrame instance
 
         //Creating size of the window
         frame.setPreferredSize(new Dimension(width, height));

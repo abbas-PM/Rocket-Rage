@@ -3,10 +3,14 @@ import java.util.Random;
 
 public class WallColumn {
     
-    private ArrayList<Wall> walls; 
-    private Random random; 
-    public int speed = 5; 
+    private ArrayList<Wall> walls;//Store all walls 
+    private Random random;//To see where opening exists
+    
+    //Speed of walls
+    private int speed = 5; 
+    private int velW = 0; 
 
+    ///Instances
     private Main main; 
     private Handler handler;
     private Camera cam; 
@@ -22,10 +26,12 @@ public class WallColumn {
         initWalls();
     }
 
+    //Method to create walls
     private void initWalls(){
  
         int randWay = random.nextInt(0, 7); 
 
+        //Creating an opening for player to go past walls
         for (int i = 0; i < 7; i++){
             if (i != randWay){
                 Wall tempWall = new Wall(-cam.getX() + 1100, i*92 + 2, 100, 100, ID.Wall, main);
@@ -39,6 +45,7 @@ public class WallColumn {
 
     public void tick(){
 
+        //Removing any walls that are not screen 
         for(int i = 0; i < walls.size(); i++){
      
             if (walls.get(i).getX() < -cam.getX() - 100){
@@ -47,31 +54,40 @@ public class WallColumn {
             }
         }
 
+        //Speeding up the walls at a certain time
         if (walls.isEmpty()){
             player.setPoints(player.getPoints() + 1); 
-            if (player.Enter1){
-                main.velW = 0; 
-                speed = 5;
-                player.setVelocity(3); 
-                player.setVM(7); 
-                cam.cameraSpeed = 1; 
-                main.velP = 0;
-                player.counter = 0;
-                player.Enter1 = false;  
-            }
-            if (main.velW >= 20 && speed < 13){
+            if (velW >= 20 && speed < 13){
                 speed += 1;
-                main.velW = 0; 
+                velW = 0; 
             }
             initWalls();
         }
     }
 
+
+    //Getters and Setters
     public ArrayList<Wall> getWalls(){
         return walls; 
     } 
 
     public void setWalls(ArrayList<Wall> walls){
         this.walls = walls; 
+    }
+
+    public void setSpeed(int speed){
+        this.speed = speed; 
+    }
+
+    public int getSpeed(){
+        return this.speed; 
+    }
+
+    public void setVELW(int velW){
+        this.velW = velW;  
+    }
+
+    public int getVELW(){
+        return this.velW; 
     }
 }
