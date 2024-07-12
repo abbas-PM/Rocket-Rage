@@ -1,5 +1,4 @@
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent; 
@@ -218,23 +217,22 @@ public class Menu extends MouseAdapter{
     public void render(Graphics g){
 
         if (main.gameState == Main.STATE.MENU){
-          Font font = new Font("Times New Roman", 1, 30);
-
-          g.setFont(tex.font);
+          
           g.setColor(Color.black);
 
           //Draw the title and options you can choose
+          g.setFont(tex.fonts[0]);
+          g.drawString("ROCKET RAGE", 340, (int)(75 + Math.sin(System.currentTimeMillis() / 100) * 2));
+
+          g.setFont(tex.fonts[1]);
           g.drawString("PLAY", 510, 240);
           g.drawString("HELP", 510, 340);
-          g.drawString("SAVE OR", 480, 430); g.drawString("LOAD", 510, 455);
+          g.drawString("SAVE OR", 480, 430); g.drawString("LOAD", 510, 460);
           g.drawString("SHOP", 510, 540);
-          g.setColor(Color.white);
-          g.drawString("QUIT", 510, 640);
-
-          g.setColor(Color.black);
-          g.drawString("ROCKET RAGE", 435, 50);
-          g.drawString("HIGH SCORE: " + main.getPlayer().highScore, 320, 100); 
-          g.drawString("TOTAL SCORE: " + main.getPlayer().totalScore, 320, 150); 
+          g.drawString("QUIT", 515, 640);
+          
+          g.drawString("HIGH SCORE: " + main.getPlayer().highScore, 340, 125); 
+          g.drawString("TOTAL SCORE: " + main.getPlayer().totalScore, 340, 175); 
         
           //Drawing the rectangles
           g.drawRect(460,600,200,64);
@@ -243,48 +241,44 @@ public class Menu extends MouseAdapter{
           g.drawRect(460,300,200,64);
           g.drawRect(460,200,200,64);
 
-          g.setColor(Color.white);
-          g.setFont(font);//Set the font
-          g.drawString("Created by Abbas Peer Mohammed", 5, 745);
+          g.drawString("Created by Abbas Peermohammed", 5, 745);
                
         }
 
         else if (main.gameState == Main.STATE.HELP){
-          g.setColor(Color.white);
-          g.setFont(tex.font);
+          g.setColor(Color.black);
+          g.setFont(tex.fonts[1]);
           g.drawString("RETURN", 490, 690);
 
-          g.setColor(Color.black);
           g.drawRect(460,650,200,64);
 
-          g.drawString("USE THE ARROW KEYS TO CONTROL THE ROCKET", 50, 50);
-          g.drawString("AND AVOID THE WALLS", 350, 75);
+          g.drawString("USE THE ARROW KEYS TO CONTROL THE ROCKET", 125, 50);
+          g.drawString("AND AVOID THE WALLS", 325, 75);
 
-          g.drawString("HOLD THE SPACEBAR TO MOVE FASTER", 180, 150);
+          g.drawString("HOLD THE SPACEBAR TO MOVE FASTER", 200, 170);
 
-          g.drawString("THE MORE WALLS YOU AVOID", 290, 225);
-          g.drawString("THE MORE POINTS YOU COLLECT", 250, 250);
+          g.drawString("THE MORE WALLS YOU AVOID", 300, 245);
+          g.drawString("THE MORE POINTS YOU COLLECT", 260, 270);
 
-          g.drawString("SPEND POINTS ON POWERUPS", 275, 325); 
-          g.drawString("COSTS INCREASE AFTER USAGE", 250, 350); 
+          g.drawString("SPEND POINTS ON POWERUPS", 285, 345); 
+          g.drawString("COSTS INCREASE AFTER USAGE", 260, 370); 
 
 
-          g.drawString("USE W TO INCREASE HEALTH", 270, 425); 
-          g.drawString("USE A TO SLOW DOWN", 270, 450);
-          g.drawString("USE S TO RESET A COST", 270, 475); 
-          g.drawString("USE D TO SHRINK IN SIZE", 270, 500); 
+          g.drawString("USE W TO INCREASE HEALTH", 300, 445); 
+          g.drawString("USE A TO SLOW DOWN", 300, 470);
+          g.drawString("USE S TO RESET A COST", 300, 495); 
+          g.drawString("USE D TO SHRINK IN SIZE", 300, 520); 
 
-          g.setColor(Color.white);
-          g.drawString("PRESS THE RESPECTED BUTTON", 240, 575); 
-          g.drawString("TWICE TO USE THE POWERUP", 260, 600); 
+          g.drawString("PRESS THE RESPECTED BUTTON", 270, 595); 
+          g.drawString("TWICE TO USE THE POWERUP", 290, 620); 
         }
 
         else if (main.gameState == Main.STATE.LOAD){
-          g.setFont(tex.font);
+          g.setFont(tex.fonts[1]);
           g.setColor(Color.black);
 
-          g.drawString("SAVE", 510, 230); g.drawString("GAME", 510, 255);
-          g.drawString("LOAD", 510, 330); g.drawString("GAME", 510, 355);
+          g.drawString("SAVE", 513, 230); g.drawString("GAME", 510, 255);
+          g.drawString("LOAD", 514, 330); g.drawString("GAME", 510, 355);
           g.drawString("RETURN", 490, 440); 
 
           g.drawRect(460,400,200,64);
@@ -294,11 +288,10 @@ public class Menu extends MouseAdapter{
         }
 
         else if (main.gameState == Main.STATE.SHOP){
-          g.setColor(Color.white);
-          g.setFont(tex.font);
-          g.drawString("RETURN", 490, 640);
+          g.setFont(tex.fonts[1]);
 
           g.setColor(Color.black);
+          g.drawString("RETURN", 490, 640);
 
           if (main.getPlayer().playerSkin == main.getTex().Player[0]){
             g.drawString("SELECTED", 65, 240);

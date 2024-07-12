@@ -15,15 +15,16 @@ public class Texture {
     private BufferedImage fire_sheet = null; 
     private BufferedImage HUD_sheet = null; 
     private BufferedImage explosion_sheet = null; 
-    private BufferedImage PB_sheet = null; 
+    private BufferedImage box_sheet = null; 
     private BufferedImage player_sheet = null;
 
+    private BufferedImage box = null;
     public BufferedImage background = null; 
     public BufferedImage cloud = null;  
     public BufferedImage Wall = null;
 
     //Arrays that store each sprite in a spritesheet
-    public BufferedImage[] PowerUps = new BufferedImage[11]; 
+    public BufferedImage[] PowerUps = new BufferedImage[5]; 
     public BufferedImage[] Explosion = new BufferedImage[9]; 
 
     public BufferedImage[] fire = new BufferedImage[8];
@@ -32,25 +33,27 @@ public class Texture {
     public BufferedImage[] Player = new BufferedImage[8]; 
 
     //Custom font
-    public Font font; 
+    private Font font;
+    public Font[] fonts = new Font[2]; 
     
     //Loading all the spritesheets
     public Texture(){
         BufferedImageLoader loader = new BufferedImageLoader(); 
         try{
-            fire_sheet = loader.loadImage("/rocket_sheet.png");
-            HUD_sheet = loader.loadImage("/HUD_sheet.png"); 
-            background = loader.loadImage("/Background.png"); 
-            cloud = loader.loadImage("/Cloud.png"); 
-            Wall = loader.loadImage("/Wall.png");  
-            PowerUps[0] = loader.loadImage("/PB.png"); 
-            explosion_sheet = loader.loadImage("/explosion_sheet.png"); 
-            PB_sheet = loader.loadImage("/PB_sheet.png"); 
-            player_sheet = loader.loadImage("/player_sheet.png");
+            fire_sheet = loader.loadImage("/res/rocket_sheet.png");
+            HUD_sheet = loader.loadImage("/res/HUD_sheet.png"); 
+            background = loader.loadImage("/res/Background.png"); 
+            cloud = loader.loadImage("/res/Cloud.png"); 
+            Wall = loader.loadImage("/res/Wall.png");  
+            box = loader.loadImage("/res/box.png"); 
+            explosion_sheet = loader.loadImage("/res/explosion_sheet.png"); 
+            box_sheet = loader.loadImage("/res/box_sheet.png"); 
+            player_sheet = loader.loadImage("/res/player_sheet.png");
 
-            InputStream is = getClass().getResourceAsStream("/font.TTF");
+            InputStream is = getClass().getResourceAsStream("/res/font.TTF");
             font = Font.createFont(Font.TRUETYPE_FONT, is); 
-            font = font.deriveFont(24f);
+            fonts[0] = font.deriveFont(64f);
+            fonts[1] = font.deriveFont(32f);
             
         }catch(Exception e){
             e.printStackTrace();
@@ -60,7 +63,7 @@ public class Texture {
         fs = new SpriteSheet(fire_sheet);
         hs = new SpriteSheet(HUD_sheet);
         es = new SpriteSheet(explosion_sheet); 
-        pb = new SpriteSheet(PB_sheet);
+        pb = new SpriteSheet(box_sheet);
         ps = new SpriteSheet(player_sheet);  
         getTextures();
     }
@@ -123,15 +126,10 @@ public class Texture {
         Explosion[8] = es.grabImage(9, 1, 100, 100);
 
         //PowerBox powerups
+        PowerUps[0] = box;
         PowerUps[1] = pb.grabImage(1, 1, 200, 150); 
         PowerUps[2] = pb.grabImage(2, 1, 200, 150); 
         PowerUps[3] = pb.grabImage(3, 1, 200, 150); 
         PowerUps[4] = pb.grabImage(4, 1, 200, 150); 
-        PowerUps[5] = pb.grabImage(5, 1, 200, 150); 
-        PowerUps[6] = pb.grabImage(6, 1, 200, 150);
-        PowerUps[7] = pb.grabImage(7, 1, 200, 150); 
-        PowerUps[8] = pb.grabImage(8, 1, 200, 150);  
-        PowerUps[9] = pb.grabImage(9, 1, 200, 150); 
-        PowerUps[10] = pb.grabImage(10, 1, 200, 150); 
     }
 }

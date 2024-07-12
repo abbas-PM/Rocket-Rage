@@ -47,7 +47,7 @@ public class HUD{
         g.setColor(Color.black);
         g.fillRect(-(int)cam.getX() + 900, 655, 93, 95);
 
-        g.setFont(tex.font);
+        g.setFont(tex.fonts[1]);
 
         //Displaying Life
         g.drawImage(tex.HUD[13], -(int)cam.getX() + 10, 0, 70, 70, null);
@@ -116,7 +116,7 @@ public class HUD{
         } 
         //2)
         if (player.pSelected == 1){
-            g.drawImage(tex.PowerUps[5], -(int)cam.getX() + 824, 610, 250, 200, null);
+            g.drawImage(tex.PowerUps[2], -(int)cam.getX() + 824, 610, 250, 200, null);
             g.drawImage(tex.HUD[15], -(int)cam.getX() + 894, 655, 50, 50, null);
             g.drawImage(tex.HUD[17], -(int)cam.getX() + 889, 670, 100, 100, null);
             g.drawString(texts[2], -(int)cam.getX() + 120, 715); 
@@ -125,7 +125,7 @@ public class HUD{
 
         //3
         if (player.pSelected == 2){
-            g.drawImage(tex.PowerUps[7], -(int)cam.getX() + 824, 610, 250, 200, null); 
+            g.drawImage(tex.PowerUps[3], -(int)cam.getX() + 824, 610, 250, 200, null); 
             g.drawImage(tex.HUD[15], -(int)cam.getX() + 894, 655, 50, 50, null);
             g.drawImage(tex.HUD[19], -(int)cam.getX() + 904, 680, 80, 80, null); 
             g.drawString(texts[3], -(int)cam.getX() + 120, 715);
@@ -135,7 +135,7 @@ public class HUD{
         }
         //4)
         if (player.pSelected == 3){
-            g.drawImage(tex.PowerUps[9], -(int)cam.getX() + 824, 610, 250, 200, null); 
+            g.drawImage(tex.PowerUps[4], -(int)cam.getX() + 824, 610, 250, 200, null); 
             g.drawImage(tex.HUD[15], -(int)cam.getX() + 894, 655, 50, 50, null);
             g.drawImage(tex.HUD[20], -(int)cam.getX() + 890, 670, 97, 100, null); 
             g.drawString(texts[4], -(int)cam.getX() + 120, 715);
@@ -150,13 +150,7 @@ public class HUD{
 
         for(int i = 0; i < s.length(); i++){
             int val = Character.getNumericValue(s.charAt(i));
-            if (val == 3) g.drawImage(tex.HUD[val], x + (i*22), y - 2, 50, 50, null);
-            else if (val == 5) g.drawImage(tex.HUD[val], x + (i*22) + 6, y + 3, 50, 50, null);
-            else if (val == 6) g.drawImage(tex.HUD[val], x + (i*22) + 3, y + 2, 50, 50, null);
-            else if (val == 7) g.drawImage(tex.HUD[val], x + (i*22) - 2, y + 1, 55, 55, null);
-            else if (val == 8) g.drawImage(tex.HUD[val], x + (i*22), y + 2, 50, 50, null);
-            else if (val == 9) g.drawImage(tex.HUD[val], x + (i*22) - 2, y + 1, 50, 50, null);
-            else if (val == 0 || val == 1 || val == 2 || val == 4) g.drawImage(tex.HUD[val], x + (i*22), y, 50, 50, null);
+            g.drawImage(tex.HUD[val], x + (i*22), y, 50, 50, null);
         }
     }catch(NullPointerException exception) {}
     }

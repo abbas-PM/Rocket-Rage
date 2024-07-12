@@ -28,6 +28,8 @@ public class SaveLoad {
 
             oos.writeObject(ds);
 
+            oos.close();
+
         } catch(Exception e){
             System.out.println("SAVE FAILED!");
         }
@@ -46,6 +48,8 @@ public class SaveLoad {
             main.getPlayer().skins = ds.skins; 
             main.getPlayer().selected = ds.selected; 
             main.getPlayer().playerSkin = main.getTex().Player[main.getPlayer().selected];
+
+            ois.close();
             
         }catch(Exception e){
             System.out.println("LOAD FAILED!"); 

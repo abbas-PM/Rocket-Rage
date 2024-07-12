@@ -55,7 +55,7 @@ public class Main extends Canvas implements Runnable{
         explosion = new Animation(tex.Explosion[0], tex.Explosion[1], tex.Explosion[2], tex.Explosion[3], tex.Explosion[4], tex.Explosion[5], tex.Explosion[6], tex.Explosion[7], tex.Explosion[8]); 
         this.addKeyListener(new KeyInput(this));
         this.addMouseListener(menu);
-        new Window(WIDTH, HEIGHT, "Game", this);
+        new Window(WIDTH, HEIGHT, "Rocket Rage", this);
     }
 
     //Start method
@@ -81,8 +81,7 @@ public class Main extends Canvas implements Runnable{
         double amountOfTicks = 60.0; 
         double ns = 1000000000 / amountOfTicks; 
         double delta = 0; 
-        long timer = System.currentTimeMillis();
-        int frames = 0; 
+        long timer = System.currentTimeMillis(); 
         while(running){
           long now = System.nanoTime(); 
           delta += ((now - lastTime) / ns);
@@ -93,11 +92,9 @@ public class Main extends Canvas implements Runnable{
           }
           if(running) {
             render(); 
-            frames++; 
           }
           if((System.currentTimeMillis() - timer) > 1000){
-            timer += 1000; 
-            frames = 0; 
+            timer += 1000;  
           }
           
         } 
@@ -163,18 +160,19 @@ public class Main extends Canvas implements Runnable{
 
       //If the game is not being played
       else {
-        //Windows: HEIGHT -150, Mac: HEIGHT -130
-        g.drawImage(tex.background, 0, 0, WIDTH, HEIGHT, null);
+        Color color = new Color(228, 52, 20);
+        g.setColor(color);
+        g.fillRect(0, 0, WIDTH, HEIGHT);
         g.drawImage(tex.cloud, 0, 0, WIDTH, HEIGHT, null);
         menu.render(g);
       }
 
       //If the game is paused during gameplay
       if (paused){
-          g.setFont(tex.font);
+          g.setFont(tex.fonts[1]);
           g.setColor(Color.white);
 
-          g.drawString("PAUSED", 470, 300); 
+          g.drawString("PAUSED", 470, (int) (300 + Math.sin(System.currentTimeMillis() / 100 ) * 2)); 
       }
 
         g.dispose(); 
